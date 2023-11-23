@@ -12,25 +12,22 @@ class Cell{
     bool mine;
     bool flagged;
     bool hidden;
-    sf::Sprite mainSprite;
     
 
 
 public:
   void addMines();
+   void reset();
 
   // std::vector<Cell*> adjacent;
    bool isRevealed();
    bool isFlagged();
    bool isMine();
     ~Cell();
-    Cell(int x , int y, sf::Texture& texture );
+    Cell(int x , int y );
     std::vector<Cell*> adjacent;
-    void setTexture(sf::Texture& texture);
-    void setPosition(int x , int y );
     void makeMine( );
     void flagSwitch( );
-    sf::Sprite Sprite();
     int getY();
     int getX();
     void revealCell();

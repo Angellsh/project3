@@ -11,6 +11,8 @@ class Board{
     int _width;
     int _height;
     bool _debug;
+    int _cell_width;
+    int _cell_height;
     sf::Texture faceHappyTexture;
     sf::Sprite mainSprite;
     sf::Texture flaggedTexture;
@@ -32,17 +34,28 @@ class Board{
     sf::Texture num6Texture;
     sf::Texture num7Texture;
     sf::Texture num8Texture;
-     bool _gameover;
+
+    bool _gamestart;
+    bool _gamewin;
+    int _gameStatus;
+    bool _revealMines;
+    bool _checkIfMine;
+    bool _gameRunning;
+
+
 
 
 
 public:
-   bool gameOver();
+bool gameRunning();
+   int getCellWidth();
+   int getCellHeight();
 
-   void SwitchDebug();
+   void SwitchDebug(sf::RenderWindow& window);
     void revealAdjacent(int row, int col);  
 
     void debugCells();
+
     void flagCell(int row, int col);
     sf::Sprite DebugButton;
     sf::Sprite WinButton;
@@ -50,15 +63,22 @@ public:
    
     std::vector<std::vector<Cell*> > cells;
     Board(int columns, int rows, int mines, int width, int height);
-    void addMines();
+    void addMines(int i, int j);
     void drawBoard(sf::RenderWindow& window);
 
-    void setTexture(int i, int j);
-    void GameLoop(int row, int col);
-
-    void boardSet();
-    std::vector<std::pair<int, int> > generateRandomNumbers();
+    void setRevealedTexture(int i, int j, sf::Sprite& sprite);
+    void GameLoop(int row, int col, sf::RenderWindow& window);
+    std::vector<std::pair<int, int> > generateRandomNumbers(std::vector<std::pair<int, int>>& excluded);
     int checkMines();
+    void reset();
+    bool checkWin();
+
+void WinOn();
+bool checkIfMine(int i,int j);
+void gameRunningFalse();
+
+
+
 
     
 

@@ -20,7 +20,6 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(width,height), "Angel's Minesweeper");
     std:: cout<<"width"<<width;
     Board board(columns, rows, mines, width, height);
-    board.addMines();
     board.checkMines();
 
 
@@ -36,28 +35,41 @@ int main() {
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
-            }else if(event.type ==sf::Event::MouseButtonPressed){
+
+            }if(board.checkWin()==0){
+                board.WinOn();
+            }
+             if(event.type ==sf::Event::MouseButtonPressed){
                 if (event.mouseButton.button == sf::Mouse::Left){
                     sf::Vector2i mouseCords =sf::Mouse::getPosition(window);
                     if(board.DebugButton.getGlobalBounds().contains(static_cast<float>(mouseCords.x), static_cast<float>(mouseCords.y))){
-                            board.SwitchDebug();
+                            board.SwitchDebug(window);
+                    }else if(board.WinButton.getGlobalBounds().contains(static_cast<float>(mouseCords.x),  static_cast<float>(mouseCords.y))){
+                            board.reset();
                     }
                     for(int i=0;i<rows;i++){
                         for (int j=0; j<columns;j++){
-                            sf::FloatRect cellBounds =board.cells[i][j]->Sprite().getGlobalBounds();
+                            sf::FloatRect cellBounds(board.cells[i][j]->getX(), board.cells[i][j]->getY(), board.getCellWidth(), board.getCellHeight());
                         if (cellBounds.contains(static_cast<float>(mouseCords.x), static_cast<float>(mouseCords.y))){
-                            board.GameLoop(i, j);
+                            if(board.gameRunning()){
+                         board.GameLoop(i, j, window);
+                        board.checkIfMine(i, j);
+                          //  board.drawBoard(window);
+                         board.drawBoard(window);
+                         //   window.display();
+
+
+
+                          }}
                         }
-                     
-                     
                     }
                 }}else if(event.mouseButton.button ==sf::Mouse::Right){
                 sf::Vector2i mouseCords =sf::Mouse::getPosition(window);
                 for(int i=0;i<rows;i++){
                         for (int j=0; j<columns;j++){
-                            sf::FloatRect cellBounds = board.cells[i][j]->Sprite().getGlobalBounds();
+                            sf::FloatRect cellBounds(board.cells[i][j]->getX(), board.cells[i][j]->getY(), board.getCellWidth(), board.getCellHeight());
                             if(cellBounds.contains(mouseCords.x, mouseCords.y)){
-                                board.flagCell(i, j);
+                            board.flagCell(i, j);
                             }
 
             
@@ -66,11 +78,8 @@ int main() {
             }
         }
         }
-        }else if(board.gameOver()){
-           
-
         }
-        }
+        
         board.drawBoard(window);
         window.display();
     }

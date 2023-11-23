@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-Cell::Cell(int  x, int y, sf::Texture& texture){
+Cell::Cell(int  x, int y){
     _x = x;
     _y= y;
     mine=false;
@@ -10,8 +10,6 @@ Cell::Cell(int  x, int y, sf::Texture& texture){
     flagged=false;
     hidden=false;
     minesCount= 0;
-    mainSprite.setTexture(texture);
-    mainSprite.setPosition(x, y);
 }
 void Cell::addMines(){
     minesCount++;
@@ -31,7 +29,7 @@ void Cell::flagSwitch(){
 
 }
 bool Cell::isMine(){
-    return mine;
+   return mine;
 }
 bool Cell::isRevealed(){
     return revealed;
@@ -40,13 +38,7 @@ bool Cell::isRevealed(){
 void Cell::revealCell(){
     revealed=true;
 }
-void Cell::setPosition(int x , int y ){
-    mainSprite.setPosition(x, y);
 
-}
-sf::Sprite Cell::Sprite(){
-    return mainSprite;
-}
 int Cell:: getY(){
         return _y;
 
@@ -54,10 +46,7 @@ int Cell:: getY(){
 int Cell:: getX(){
         return _x;
     }
-void Cell::setTexture(sf::Texture& texture){
-        mainSprite.setTexture(texture);
 
-}
 
 int Cell::countAdjacent(){
      return minesCount;
@@ -69,4 +58,12 @@ int Cell::countAdjacent(){
             minesCount++;
         }
     }return minesCount;*/ 
+}
+void Cell::reset(){
+    mine=false;
+    revealed=false;
+    flagged=false;
+    hidden=false;
+    minesCount= 0;
+
 }
