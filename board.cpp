@@ -146,10 +146,10 @@ void Board::GameLoop(int row, int col, sf::RenderWindow& window){
    if (_gameRunning){
      if( !_gamestart){
        addMines(row, col);
-       }
-       else{
+       }else{
            if (!cells[row][col]->isMine()){
            revealAdjacent(row, col);
+           
            }
            else{
             for (int i =0; i<_rows; i++){
@@ -160,7 +160,17 @@ void Board::GameLoop(int row, int col, sf::RenderWindow& window){
            drawBoard(window);
            _gameRunning=false;
         }
-    }
+    }checkWin();
+           if(_gamewin){
+           _gameStatus=2;
+           for (int i =0;i<_rows;i++){
+           for(int j=0;j<_columns;j++){
+                cells[i][j]->revealCell();
+             }
+         }
+            drawBoard(window);
+            _gameRunning=false;
+            }
 }
 }
 void Board::revealAdjacent(int row, int col){
@@ -364,20 +374,7 @@ void Board::reset(){
     }
     
 }
-bool Board::checkWin(){
-   int safecells=( _columns*_rows)-_mines;;
-     for (int row=0;row<_rows;row++){
-        for (int col=0;col<_columns;col++){
-            if (cells[row][col]->isRevealed()){
-                safecells--;
-            }
 
-
-        }
-     }
-   //  std::cout<<"safe cells:"<<safecells<<std::endl;
-     return safecells;
-}
 void Board::WinOn(){
     WinButton.setTexture(faceWinTexture);
     _gameRunning=false;
@@ -401,4 +398,20 @@ bool Board::checkIfMine(int i, int j){
 
 bool Board::gameRunning(){
     return _gameRunning;
+}
+void Board::checkWin(){
+    int safeCells = (_columns*_rows)-_mines;
+    int totalRevealed=0;
+    for (int i =0;i<_rows;i++){
+          for(int j=0;j<_columns;j++){
+            if(cells[i][j]->isRevealed()){
+                totalRevealed++;
+            }
+
+        }
+    }
+    std::cout<<"total revealed: "<<totalRevealed<<" total safe: "<<safeCells<<std::endl;
+    _gamewin=(totalRevealed==safeCells);
+
+
 }

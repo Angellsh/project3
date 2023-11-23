@@ -12,7 +12,8 @@ int main() {
     if (!file.is_open()){
         cout<<"not open";}
     int columns, rows, mines;
-    file>>columns>>rows>>mines;
+   file>>columns>>rows>>mines;
+   
     int width = columns*32;
    std:: cout<<"real width"<<width;
 
@@ -36,8 +37,6 @@ int main() {
             if (event.type == sf::Event::Closed) {
                 window.close();
 
-            }if(board.checkWin()==0){
-                board.WinOn();
             }
              if(event.type ==sf::Event::MouseButtonPressed){
                 if (event.mouseButton.button == sf::Mouse::Left){

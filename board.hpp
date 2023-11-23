@@ -71,7 +71,7 @@ bool gameRunning();
     std::vector<std::pair<int, int> > generateRandomNumbers(std::vector<std::pair<int, int>>& excluded);
     int checkMines();
     void reset();
-    bool checkWin();
+    void checkWin();
 
 void WinOn();
 bool checkIfMine(int i,int j);
