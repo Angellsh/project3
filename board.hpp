@@ -13,6 +13,7 @@ class Board{
     bool _debug;
     int _cell_width;
     int _cell_height;
+    std::vector<std::vector<int> > _numbers;
     sf::Texture faceHappyTexture;
     sf::Sprite mainSprite;
     sf::Texture flaggedTexture;
@@ -34,6 +35,7 @@ class Board{
     sf::Texture num6Texture;
     sf::Texture num7Texture;
     sf::Texture num8Texture;
+    bool _test;
 
     bool _gamestart;
     bool _gamewin;
@@ -47,6 +49,8 @@ class Board{
 
 
 public:
+void Initialize();
+
 bool gameRunning();
    int getCellWidth();
    int getCellHeight();
@@ -59,8 +63,20 @@ bool gameRunning();
     void flagCell(int row, int col);
     sf::Sprite DebugButton;
     sf::Sprite WinButton;
-    sf::Sprite MinesCountButton;
-   
+    sf::Sprite DigitsButton0;
+    sf::Sprite DigitsButton1;
+    sf::Sprite DigitsButton2;
+    sf::Sprite Test1Button;
+    sf::Sprite Test2Button;
+    sf::Sprite Test3Button;
+
+
+
+
+    void Test(int option);
+    void Modify(int cols, int rows, int width, int height, std::vector<std::vector<int> > numbers);
+    ~Board();
+
     std::vector<std::vector<Cell*> > cells;
     Board(int columns, int rows, int mines, int width, int height);
     void addMines(int i, int j);

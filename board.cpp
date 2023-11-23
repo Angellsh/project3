@@ -5,11 +5,12 @@
 #include <algorithm>
 #include <utility>
 #include <memory>
+#include <sstream>
+#include <iomanip>
 
 
-Board::Board(int cols, int rows, int mines, int width, int height)
-    : _width(width),_columns(cols),_rows(rows),_height (height), _mines(mines){
-          flagTexture.loadFromFile("images/flag.png");
+void Board::Initialize(){
+         flagTexture.loadFromFile("images/flag.png");
           mineTexture.loadFromFile("images/mine.png");
           tileHiddenTexture.loadFromFile("images/tile_hidden.png");
           tileRevealedTexture.loadFromFile("images/tile_revealed.png");
@@ -37,9 +38,44 @@ Board::Board(int cols, int rows, int mines, int width, int height)
            _gameStatus=1;
            _revealMines=false;
            _gameRunning=true;
+           _test=false;
+            cells.resize(_rows, std::vector<Cell*>(_columns, nullptr));
 
 
-       cells.resize(_rows, std::vector<Cell*>(_columns, nullptr));
+}
+/*void Board::Modify(int cols, int rows, int width, int height, std::vector<std::vector<int> > numbers){
+    reset();
+    for (int i =0;i<_rows;i++){
+    for(int j=0;j<_columns;j++){
+           delete cells[i][j];
+          }}
+    _width = width;
+    _columns = cols;
+    _rows = rows;
+    _height = height;
+    _numbers = numbers;
+    cells.resize(_rows, std::vector<Cell*>(_columns, nullptr));
+    for (int i =0;i<_rows;i++){
+        for(int j=0;j<_columns;j++){
+            cells[i][j] = new Cell(i*_cell_width, j*_cell_height );
+             if (numbers[i][j]==1){
+                cells[i][j]->makeMine();
+            }
+
+        }} _test =true;
+
+
+
+
+
+
+}*/
+
+
+
+Board::Board(int cols, int rows, int mines, int width, int height)
+    : _width(width),_columns(cols),_rows(rows),_height (height), _mines(mines){
+          Initialize();
           for (int a =0;a<_rows;a++){
           for(int b=0;b<_columns;b++){
            cells[a][b] = new Cell(b*_cell_width, a*_cell_height );
@@ -296,21 +332,58 @@ void Board::drawBoard(sf::RenderWindow& window){
 
         }
     }
-          DebugButton.setTexture(debugTexture);
-          DebugButton.setPosition(_width/2+100, _height-100);
-         if(_gameStatus==1){WinButton.setTexture(faceHappyTexture);}
-         else if(_gameStatus==2){WinButton.setTexture(faceWinTexture);}
-         else if(_gameStatus==3){WinButton.setTexture(faceLostTexture);}
-
-          WinButton.setPosition(_width/2, _height-100);
-          MinesCountButton.setTexture(digitsTexture);
-          MinesCountButton.setPosition(_width/2-250, _height-100);
-
+    DebugButton.setTexture(debugTexture);
+    DebugButton.setPosition(_width - test1.getSize().x*4, _height-100);
+    if(_gameStatus==1){WinButton.setTexture(faceHappyTexture);}
+    else if(_gameStatus==2){WinButton.setTexture(faceWinTexture);}
+    else if(_gameStatus==3){WinButton.setTexture(faceLostTexture);}
+    WinButton.setPosition(_width/2-faceWinTexture.getSize().x/2, _height-100);
     window.draw(DebugButton);
     window.draw(WinButton);
-    window.draw(MinesCountButton);
-}
 
+    Test1Button.setTexture(test1);
+    Test2Button.setTexture(test2);
+    Test3Button.setTexture(test3);
+    Test1Button.setPosition(_width - test1.getSize().x*3, _height-100);
+    Test2Button.setPosition(_width - test1.getSize().x*2, _height-100);
+    Test3Button.setPosition(_width - test1.getSize().x, _height-100);
+    window.draw(Test1Button);
+     window.draw(Test2Button);
+    window.draw(Test3Button);
+
+
+
+
+    std::map<int, sf::Sprite> digitsMap;
+    for (int i=0; i<10; i++){
+        sf::Sprite offsetSprite(digitsTexture);
+        sf::IntRect textRect(21*i,0, 21, 32 );
+        offsetSprite.setTextureRect(textRect);
+        digitsMap[i]=offsetSprite;
+    }
+    std::stringstream str;
+    str<<std::setw(3)<<std::setfill('0')<<_mines;
+    std::string mineString = str.str();
+    std::cout<<"minestring"<<mineString<<std::endl;
+    DigitsButton0=digitsMap[mineString[0]-'0'];
+     DigitsButton1=digitsMap[mineString[1]-'0'];
+     DigitsButton2=digitsMap[mineString[2]-'0'];
+    DigitsButton0.setPosition(41, _height-100);;
+    DigitsButton1.setPosition(62, _height-100);;
+    DigitsButton2.setPosition(83, _height-100);;
+    window.draw(DigitsButton0);
+    window.draw( DigitsButton1);
+    window.draw(DigitsButton2);
+    std::cout<<"digitsMap[mineString[0]-'0']"<<mineString[1]-'0'<<std::endl;
+
+
+
+
+
+
+
+   
+}
 
 std::vector<std::pair<int, int> > Board::generateRandomNumbers(std::vector<std::pair<int, int>>& excluded){
     std::vector<std::pair<int, int> > numbers;
@@ -366,6 +439,7 @@ void Board::reset(){
            _debug = false;
            _gameRunning=true;
            _gameStatus=1;
+           _test=false;
     for (int a =0;a<_rows;a++){
        for(int b=0;b<_columns;b++){
            cells[a][b]->reset();
@@ -414,4 +488,10 @@ void Board::checkWin(){
     _gamewin=(totalRevealed==safeCells);
 
 
+}
+Board::~Board(){
+    for (int i =0;i<_rows;i++){
+          for(int j=0;j<_columns;j++){
+           delete cells[i][j];
+          }}
 }
