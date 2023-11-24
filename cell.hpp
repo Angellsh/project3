@@ -3,8 +3,6 @@
 #include <vector>
 
 class Cell{
-
-
     int minesCount;
     int _x;
     int _y;
@@ -16,28 +14,18 @@ class Cell{
 
 
 public:
-  void addMines();
-   void reset();
-
-  // std::vector<Cell*> adjacent;
+   Cell(int x , int y );
+   std::vector<Cell*> adjacent;
    bool isRevealed();
    bool isFlagged();
    bool isMine();
-    ~Cell();
-    Cell(int x , int y );
-    std::vector<Cell*> adjacent;
-    void makeMine( );
-    void flagSwitch( );
-    int getY();
-    int getX();
-    void revealCell();
-    int countAdjacent();
-
-
-    
-
-
-
-
-
+   void makeMine();
+   void flagSwitch();
+   void revealCell();
+   void addMines();
+   void reset();
+   int getY();
+   int getX();
+   int countAdjacent();
+   ~Cell();
 };

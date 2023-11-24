@@ -40,24 +40,16 @@ void Cell::revealCell(){
 }
 
 int Cell:: getY(){
-        return _y;
+    return _y;
 
     }
 int Cell:: getX(){
-        return _x;
+    return _x;
     }
 
 
 int Cell::countAdjacent(){
      return minesCount;
-
-
-   /*minesCount=0;
-    for(const auto& i : adjacent ){
-        if (i!= nullptr && i->isMine() ){
-            minesCount++;
-        }
-    }return minesCount;*/ 
 }
 void Cell::reset(){
     mine=false;
